@@ -54,7 +54,15 @@ export function TransactionList({ transactions, onDelete, onEdit, isAdmin }: Tra
                   </button>
                 )}
                 {onDelete && (
-                  <button onClick={() => onDelete(tx.id)} className="p-1.5 text-muted hover:text-trading-down transition-colors" aria-label="Hapus transaksi">
+                  <button 
+                    onClick={() => {
+                      if (window.confirm(`Apakah Anda yakin ingin menghapus transaksi "${tx.description}" senilai ${formatCurrency(tx.amount)}?`)) {
+                        onDelete(tx.id);
+                      }
+                    }} 
+                    className="p-1.5 text-muted hover:text-trading-down transition-colors" 
+                    aria-label="Hapus transaksi"
+                  >
                     <Trash2 size={14} />
                   </button>
                 )}
