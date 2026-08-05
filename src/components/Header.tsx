@@ -88,12 +88,24 @@ export default function Header({
             </button>
           </div>
 
-          <button
-            className="md:hidden p-2 text-content"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-2 rounded-full hover:bg-surface-elevated transition-colors text-muted hover:text-content"
+                aria-label="Ganti tema"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            )}
+            <button
+              className="p-2 text-content"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu utama"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 

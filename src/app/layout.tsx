@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="antialiased selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

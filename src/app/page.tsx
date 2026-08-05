@@ -189,6 +189,7 @@ export default function HomePage() {
                     value={stats.jumlahTransaksi}
                     icon={<Hash className="w-7 h-7" />}
                     isCurrency={false}
+                    className="col-span-2 lg:col-span-1"
                   />
                 </div>
 
