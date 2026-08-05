@@ -116,6 +116,7 @@ export function useTransactions() {
             description: tx.description,
             date: tx.date,
             source: tx.source || null,
+            memberIds: tx.memberIds || null,
             createdAt: serverTimestamp(),
           });
           newTx.id = docRef.id;
