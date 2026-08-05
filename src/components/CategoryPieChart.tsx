@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from 'recharts';
 import type { Transaction } from '@/types/index';
+import { formatCurrency } from '@/lib/constants';
 
 type CategoryPieChartProps = {
   transactions: Transaction[];
@@ -59,7 +60,7 @@ export default function CategoryPieChart({ transactions }: CategoryPieChartProps
             paddingAngle={5}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="var(--color-surface-elevated-val)" strokeWidth={2} />
             ))}
           </Pie>
