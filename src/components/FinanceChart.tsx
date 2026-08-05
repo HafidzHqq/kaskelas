@@ -17,24 +17,18 @@ type FinanceChartProps = {
 };
 
 type ChartPoint = {
-  month: string;
+  date: string;
   pemasukan: number;
   pengeluaran: number;
 };
 
-const formatMonth = (date: string) => {
+const formatDateLabel = (date: string) => {
   const parsedDate = new Date(date);
   if (Number.isNaN(parsedDate.getTime())) return date;
   return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
     month: 'short',
-    year: 'numeric',
   }).format(parsedDate);
-};
-
-const monthKey = (date: string) => {
-  const parsedDate = new Date(date);
-  if (Number.isNaN(parsedDate.getTime())) return date;
-  return `${parsedDate.getFullYear()}-${String(parsedDate.getMonth() + 1).padStart(2, '0')}`;
 };
 
 export default function FinanceChart({ transactions }: FinanceChartProps) {
@@ -42,9 +36,9 @@ export default function FinanceChart({ transactions }: FinanceChartProps) {
     const grouped = new Map<string, ChartPoint>();
 
     transactions.forEach((transaction) => {
-      const key = monthKey(transaction.date);
+      const key = transaction.date;
       const current = grouped.get(key) ?? {
-        month: formatMonth(transaction.date),
+        date: formatDateLabel(transaction.date),
         pemasukan: 0,
         pengeluaran: 0,
       };
@@ -65,22 +59,22 @@ export default function FinanceChart({ transactions }: FinanceChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[250px] items-center justify-center rounded-lg bg-[#0b0e11] text-sm text-[#707a8a] md:h-[320px]">
+      <div className="flex h-[250px] items-center justify-center rounded-lg bg-surface-elevated text-sm text-muted md:h-[320px]">
         Belum ada data transaksi
       </div>
     );
   }
 
   return (
-    <div className="h-[250px] w-full rounded-lg bg-[#0b0e11] p-2 text-[#ffffff] md:h-[320px] md:p-4">
+    <div className="h-[250px] w-full rounded-lg bg-surface-elevated p-2 text-content md:h-[320px] md:p-4">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 12, right: 8, left: -16, bottom: 4 }}>
           <CartesianGrid stroke="#2b3139" strokeDasharray="3 3" />
-          <XAxis dataKey="month" stroke="#707a8a" tick={{ fill: '#707a8a', fontSize: 11 }} />
+          <XAxis dataKey="date" stroke="#707a8a" tick={{ fill: '#707a8a', fontSize: 11 }} />
           <YAxis stroke="#707a8a" tick={{ fill: '#707a8a', fontSize: 11 }} />
           <Tooltip
-            contentStyle={{ backgroundColor: '#1e2329', border: '1px solid #2b3139', borderRadius: 8, color: '#ffffff' }}
-            labelStyle={{ color: '#ffffff' }}
+            contentStyle={{ backgroundColor: 'var(--color-surface-card-val)', border: '1px solid var(--color-hairline-val)', borderRadius: 8, color: 'var(--color-content-val)' }}
+            labelStyle={{ color: 'var(--color-content-val)' }}
             formatter={(value, name) => [Number(value).toLocaleString('id-ID'), name]}
           />
           <Line type="monotone" dataKey="pemasukan" name="Pemasukan" stroke="#0ecb81" strokeWidth={2} dot={{ fill: '#0ecb81', r: 3 }} />

@@ -41,12 +41,12 @@ export default function LoginModal({
     <>
       <div className="fixed inset-0 z-40 bg-black/50" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-sm bg-surface-card-dark border border-hairline-on-dark rounded-lg overflow-hidden">
-          <div className="flex items-center justify-between p-4 border-b border-hairline-on-dark">
-            <h2 className="text-lg font-bold text-on-dark">Login Admin</h2>
+        <div className="w-full max-w-[384px] bg-surface-card border border-hairline rounded-lg overflow-hidden">
+          <div className="flex items-center justify-between p-4 border-b border-hairline">
+            <h2 className="text-lg font-bold text-content">Login Admin</h2>
             <button
               onClick={onClose}
-              className="p-1 text-muted hover:text-on-dark"
+              className="p-1 text-muted hover:text-content"
             >
               <X className="w-5 h-5" />
             </button>
@@ -61,8 +61,8 @@ export default function LoginModal({
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@kaskelas.com"
-                className="w-full px-3 py-2 bg-surface-elevated-dark border border-hairline-on-dark rounded text-on-dark text-sm focus:outline-none focus:border-primary"
+                placeholder="Masukkan email admin..."
+                className="w-full px-3 py-2 bg-surface-elevated border border-hairline rounded text-content text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -75,8 +75,8 @@ export default function LoginModal({
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="admin123"
-                className="w-full px-3 py-2 bg-surface-elevated-dark border border-hairline-on-dark rounded text-on-dark text-sm focus:outline-none focus:border-primary"
+                placeholder="Masukkan password..."
+                className="w-full px-3 py-2 bg-surface-elevated border border-hairline rounded text-content text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>

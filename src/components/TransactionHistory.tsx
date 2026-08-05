@@ -56,22 +56,22 @@ export function TransactionHistory({ transactions, isAdmin, onDelete, onEdit }: 
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
-        <div className="flex w-full sm:w-auto overflow-x-auto bg-surface-elevated-dark p-1 rounded-lg scrollbar-none">
+        <div className="flex w-full sm:w-auto overflow-x-auto bg-surface-elevated p-1 rounded-lg scrollbar-none">
           <button
             onClick={() => setFilter('all')}
-            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'all' ? 'bg-surface-card-dark text-primary font-medium' : 'text-muted hover:text-on-dark'}`}
+            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'all' ? 'bg-surface-card text-primary font-medium' : 'text-muted hover:text-content'}`}
           >
             Semua
           </button>
           <button
             onClick={() => setFilter('income')}
-            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'income' ? 'bg-surface-card-dark text-primary font-medium' : 'text-muted hover:text-on-dark'}`}
+            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'income' ? 'bg-surface-card text-primary font-medium' : 'text-muted hover:text-content'}`}
           >
             Pemasukan
           </button>
           <button
             onClick={() => setFilter('expense')}
-            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'expense' ? 'bg-surface-card-dark text-primary font-medium' : 'text-muted hover:text-on-dark'}`}
+            className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-md transition-colors ${filter === 'expense' ? 'bg-surface-card text-primary font-medium' : 'text-muted hover:text-content'}`}
           >
             Pengeluaran
           </button>
@@ -85,14 +85,14 @@ export function TransactionHistory({ transactions, isAdmin, onDelete, onEdit }: 
               placeholder="Cari..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-surface-elevated-dark border border-hairline-on-dark rounded-lg pl-9 pr-3 py-2 text-xs sm:text-sm text-on-dark focus:outline-none focus:border-primary truncate"
+              className="w-full bg-surface-elevated border border-hairline rounded-lg pl-9 pr-3 py-2 text-xs sm:text-sm text-content focus:outline-none focus:border-primary truncate"
             />
           </div>
 
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortType)}
-            className="w-full sm:w-auto bg-surface-elevated-dark border border-hairline-on-dark rounded-lg px-3 py-2 text-xs sm:text-sm text-on-dark focus:outline-none focus:border-primary"
+            className="w-full sm:w-auto bg-surface-elevated border border-hairline rounded-lg px-3 py-2 text-xs sm:text-sm text-content focus:outline-none focus:border-primary"
           >
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
@@ -101,7 +101,7 @@ export function TransactionHistory({ transactions, isAdmin, onDelete, onEdit }: 
         </div>
       </div>
 
-      <div className="bg-surface-card-dark rounded-lg border border-hairline-on-dark overflow-hidden">
+      <div className="bg-surface-card rounded-lg border border-hairline overflow-hidden">
         <TransactionList
           transactions={filteredAndSortedTransactions}
           isAdmin={isAdmin}

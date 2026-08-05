@@ -25,7 +25,7 @@ export function TransactionList({ transactions, onDelete, onEdit, isAdmin }: Tra
       {transactions.map((tx) => (
         <div
           key={tx.id}
-          className="flex items-start gap-3 p-3 sm:p-4 border-b border-hairline-on-dark bg-canvas-dark hover:bg-surface-card-dark transition-colors last:border-b-0 min-w-0"
+          className="flex items-start gap-3 p-3 sm:p-4 border-b border-hairline bg-background hover:bg-surface-card transition-colors last:border-b-0 min-w-0"
         >
           <div className="flex flex-col gap-1 flex-1 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -34,7 +34,7 @@ export function TransactionList({ transactions, onDelete, onEdit, isAdmin }: Tra
               </span>
               <span className="text-[11px] sm:text-xs text-muted truncate">{formatDate(tx.date)}</span>
             </div>
-            <p className="text-sm font-medium text-on-dark truncate">{tx.description}</p>
+            <p className="text-sm font-medium text-content truncate">{tx.description}</p>
             {(tx.category || tx.source) && (
               <p className="text-[11px] sm:text-xs text-muted truncate">
                 {tx.type === 'income' ? `Sumber: ${tx.source}` : `Kategori: ${tx.category}`}

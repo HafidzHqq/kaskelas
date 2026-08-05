@@ -8,6 +8,7 @@ export interface Transaction {
   description: string;
   date: string;
   source?: string;
+  memberIds?: string[];
   createdAt: number;
 }
 

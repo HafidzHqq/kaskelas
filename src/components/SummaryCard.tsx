@@ -12,6 +12,8 @@ interface SummaryCardProps {
     positive: boolean;
   };
   className?: string;
+  isCurrency?: boolean;
+  valueClassName?: string;
 }
 
 export default function SummaryCard({
@@ -20,9 +22,11 @@ export default function SummaryCard({
   icon,
   trend,
   className = '',
+  isCurrency = true,
+  valueClassName = '',
 }: SummaryCardProps) {
   return (
-    <div className={`bg-surface-card-dark border border-hairline-on-dark rounded-xl p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden ${className}`}>
+    <div className={`bg-surface-card border border-hairline rounded-xl p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden ${className}`}>
       <div className="flex items-center justify-between gap-2">
         <p className="text-[11px] sm:text-xs font-semibold text-muted uppercase tracking-wider truncate">
           {title}
@@ -34,8 +38,8 @@ export default function SummaryCard({
         )}
       </div>
       <div className="mt-2 min-w-0">
-        <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-on-dark tabular-nums truncate tracking-tight">
-          {formatCurrency(value)}
+        <p className={`text-lg sm:text-2xl lg:text-3xl font-bold tabular-nums truncate tracking-tight ${valueClassName || 'text-content'}`}>
+          {isCurrency ? formatCurrency(value) : value.toLocaleString('id-ID')}
         </p>
         {trend && (
           <div className="mt-1.5 flex items-center gap-1 flex-wrap">
@@ -44,7 +48,7 @@ export default function SummaryCard({
                 trend.positive ? 'text-trading-up' : 'text-trading-down'
               }`}
             >
-              {trend.positive ? '+' : ''}{formatCurrency(trend.value)}
+              {trend.positive ? '+' : ''}{isCurrency ? formatCurrency(trend.value) : trend.value.toLocaleString('id-ID')}
             </span>
             <span className="text-[11px] text-muted">{trend.label}</span>
           </div>
