@@ -39,10 +39,16 @@ export function TransactionHistory({ transactions, isAdmin, onDelete, onEdit }: 
 
     result.sort((a, b) => {
       switch (sort) {
-        case 'newest':
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        case 'oldest':
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'newest': {
+          const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+          if (dateDiff !== 0) return dateDiff;
+          return b.createdAt - a.createdAt;
+        }
+        case 'oldest': {
+          const dateDiff = new Date(a.date).getTime() - new Date(b.date).getTime();
+          if (dateDiff !== 0) return dateDiff;
+          return a.createdAt - b.createdAt;
+        }
         case 'largest':
           return b.amount - a.amount;
         default:

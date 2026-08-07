@@ -1,7 +1,7 @@
 'use client';
 
 import { Transaction } from '@/types';
-import { formatCurrency, formatDate } from '@/lib/constants';
+import { formatCurrency, formatDateTime } from '@/lib/constants';
 import { Pencil, Trash2 } from 'lucide-react';
 
 interface TransactionListProps {
@@ -32,7 +32,7 @@ export function TransactionList({ transactions, onDelete, onEdit, isAdmin }: Tra
               <span className={`flex-shrink-0 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded font-medium ${tx.type === 'income' ? 'bg-trading-up/10 text-trading-up' : 'bg-trading-down/10 text-trading-down'}`}>
                 {tx.type === 'income' ? 'Masuk' : 'Keluar'}
               </span>
-              <span className="text-[11px] sm:text-xs text-muted truncate">{formatDate(tx.date)}</span>
+              <span className="text-[11px] sm:text-xs text-muted truncate">{formatDateTime(tx.date, tx.createdAt)}</span>
             </div>
             <p className="text-sm font-medium text-content truncate">{tx.description}</p>
             {(tx.category || tx.source) && (

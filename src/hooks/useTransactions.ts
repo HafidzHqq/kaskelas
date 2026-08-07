@@ -44,8 +44,16 @@ export function useTransactions() {
   const [source, setSource] = useState<'local' | 'firebase'>('local');
 
   useEffect(() => {
+    const sortHelper = (txs: Transaction[]) => {
+      return [...txs].sort((a, b) => {
+        const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+        if (dateDiff !== 0) return dateDiff;
+        return b.createdAt - a.createdAt;
+      });
+    };
+
     if (!isFirebaseConfigured()) {
-      setTransactions(readLocal());
+      setTransactions(sortHelper(readLocal()));
       setLoading(false);
       setSource('local');
       return;
@@ -53,7 +61,7 @@ export function useTransactions() {
 
     const db = getFirestoreDb();
     if (!db) {
-      setTransactions(readLocal());
+      setTransactions(sortHelper(readLocal()));
       setLoading(false);
       setSource('local');
       return;
@@ -69,17 +77,32 @@ export function useTransactions() {
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {
-          const items = snapshot.docs.map((d) => ({
-            id: d.id,
-            ...d.data(),
-          })) as Transaction[];
-          setTransactions(items);
+          const items = snapshot.docs.map((d) => {
+            const data = d.data();
+            let createdAt = Date.now();
+            if (data.createdAt) {
+              if (typeof data.createdAt.toMillis === 'function') {
+                createdAt = data.createdAt.toMillis();
+              } else if (data.createdAt.seconds) {
+                createdAt = data.createdAt.seconds * 1000;
+              } else if (typeof data.createdAt === 'number') {
+                createdAt = data.createdAt;
+              }
+            }
+            return {
+              id: d.id,
+              ...data,
+              createdAt,
+            } as Transaction;
+          });
+          
+          setTransactions(sortHelper(items));
           setLoading(false);
         },
         (err) => {
           console.error('Firestore snapshot error:', err);
           setError('Gagal memuat dari Firebase, menggunakan data lokal.');
-          setTransactions(readLocal());
+          setTransactions(sortHelper(readLocal()));
           setSource('local');
           setLoading(false);
         }
@@ -87,7 +110,7 @@ export function useTransactions() {
 
       return () => unsubscribe();
     } catch {
-      setTransactions(readLocal());
+      setTransactions(sortHelper(readLocal()));
       setLoading(false);
       setSource('local');
       return;
@@ -125,6 +148,11 @@ export function useTransactions() {
 
       setTransactions((prev) => {
         const updated = [newTx, ...prev];
+        updated.sort((a, b) => {
+          const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+          if (dateDiff !== 0) return dateDiff;
+          return b.createdAt - a.createdAt;
+        });
         writeLocal(updated);
         return updated;
       });
@@ -144,6 +172,11 @@ export function useTransactions() {
 
       setTransactions((prev) => {
         const updated = prev.map((tx) => (tx.id === id ? { ...tx, ...data } : tx));
+        updated.sort((a, b) => {
+          const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+          if (dateDiff !== 0) return dateDiff;
+          return b.createdAt - a.createdAt;
+        });
         writeLocal(updated);
         return updated;
       });

@@ -68,6 +68,37 @@ export function formatDate(dateStr: string): string {
   }).format(date);
 }
 
+export function formatDateTime(dateStr: string, createdAt?: number | any): string {
+  const date = new Date(dateStr);
+  const formattedDate = new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(date);
+
+  if (!createdAt) return formattedDate;
+
+  let timeMs = 0;
+  if (typeof createdAt === 'number') {
+    timeMs = createdAt;
+  } else if (createdAt && typeof createdAt.toMillis === 'function') {
+    timeMs = createdAt.toMillis();
+  } else if (createdAt && createdAt.seconds) {
+    timeMs = createdAt.seconds * 1000;
+  }
+
+  if (!timeMs) return formattedDate;
+
+  const timeObj = new Date(timeMs);
+  const formattedTime = new Intl.DateTimeFormat('id-ID', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(timeObj);
+
+  return `${formattedDate}, ${formattedTime}`;
+}
+
 export function generateId(): string {
   return typeof crypto !== 'undefined' && 'randomUUID' in crypto
     ? crypto.randomUUID()
