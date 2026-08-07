@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Transaction, TransactionType } from '@/types';
 import { members } from '@/lib/constants';
-import { Search } from 'lucide-react';
+import { Search, Check } from 'lucide-react';
 
 interface TransactionFormProps {
   onSubmit: (tx: Omit<Transaction, 'id' | 'createdAt'>) => void;
@@ -131,8 +131,8 @@ export function TransactionForm({ onSubmit, initialData, onCancel }: Transaction
             <label className="text-xs sm:text-sm font-medium text-muted" htmlFor="source">Sumber Keterangan</label>
             <input id="source" type="text" required value={source} onChange={(e) => setSource(e.target.value)} placeholder="Contoh: Uang Kas Bulan Agustus" className="w-full bg-surface-elevated border border-hairline rounded-md p-2.5 text-content text-xs sm:text-sm focus:outline-none focus:border-primary" />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <div className="flex justify-between items-end gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-2.5">
               <div className="flex-1 flex flex-col gap-1.5">
                 <label className="text-xs sm:text-sm font-medium text-muted">Daftar Anggota yang Bayar</label>
                 <div className="relative">
@@ -148,32 +148,51 @@ export function TransactionForm({ onSubmit, initialData, onCancel }: Transaction
                   />
                 </div>
               </div>
-              <button 
-                type="button" 
-                onClick={() => setSelectedMembers(selectedMembers.length === members.length ? [] : members.map(m => m.id))}
-                className="text-xs text-primary hover:underline focus:outline-none pb-2.5 whitespace-nowrap"
-              >
-                {selectedMembers.length === members.length ? 'Batal Semua' : 'Pilih Semua'}
-              </button>
+              <div className="flex gap-2 self-end sm:self-auto sm:pb-0.5">
+                <button 
+                  type="button" 
+                  onClick={() => setSelectedMembers(members.map(m => m.id))}
+                  className="text-[10px] sm:text-xs px-2.5 py-1.5 rounded bg-primary/10 text-primary border border-primary/20 font-medium hover:bg-primary/20 transition-colors"
+                >
+                  Pilih Semua
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setSelectedMembers([])}
+                  className="text-[10px] sm:text-xs px-2.5 py-1.5 rounded bg-surface-elevated text-muted border border-hairline font-medium hover:bg-surface-card hover:text-content transition-colors"
+                >
+                  Batal Semua
+                </button>
+              </div>
             </div>
-            <div className="max-h-48 overflow-y-auto bg-surface-elevated border border-hairline rounded-md p-2 grid grid-cols-1 sm:grid-cols-2 gap-2 scrollbar-thin scrollbar-thumb-surface-card scrollbar-track-transparent">
-              {filteredMembers.map(member => (
-                <label key={member.id} className="flex items-center gap-2 p-1.5 hover:bg-surface-card rounded cursor-pointer transition-colors">
-                  <input 
-                    type="checkbox" 
-                    className="accent-primary w-4 h-4 rounded border-hairline"
-                    checked={selectedMembers.includes(member.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedMembers([...selectedMembers, member.id]);
-                      } else {
+            <div className="max-h-64 overflow-y-auto bg-surface-elevated border border-hairline rounded-md p-2 grid grid-cols-1 sm:grid-cols-2 gap-2 scrollbar-thin scrollbar-thumb-surface-card scrollbar-track-transparent">
+              {filteredMembers.map(member => {
+                const isSelected = selectedMembers.includes(member.id);
+                return (
+                  <div 
+                    key={member.id} 
+                    onClick={() => {
+                      if (isSelected) {
                         setSelectedMembers(selectedMembers.filter(id => id !== member.id));
+                      } else {
+                        setSelectedMembers([...selectedMembers, member.id]);
                       }
                     }}
-                  />
-                  <span className="text-xs sm:text-sm text-content truncate">{member.name}</span>
-                </label>
-              ))}
+                    className={`flex items-center justify-between p-2 px-2.5 rounded-lg border cursor-pointer select-none transition-all text-xs sm:text-sm font-medium ${
+                      isSelected
+                        ? 'bg-primary/10 border-primary text-primary'
+                        : 'bg-surface-card border-hairline text-content hover:bg-surface-elevated'
+                    }`}
+                  >
+                    <span className="truncate pr-2">{member.name}</span>
+                    {isSelected ? (
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                    ) : (
+                      <div className="w-4 h-4 rounded-full border border-muted/30 flex-shrink-0" />
+                    )}
+                  </div>
+                );
+              })}
             </div>
             <p className="text-xs text-muted mt-0.5">{selectedMembers.length} anggota dipilih</p>
           </div>
