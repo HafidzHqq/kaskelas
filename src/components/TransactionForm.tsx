@@ -18,7 +18,7 @@ export function TransactionForm({ onSubmit, initialData, onCancel }: Transaction
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState('');
   const [source, setSource] = useState('');
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [memberSearch, setMemberSearch] = useState('');
@@ -106,11 +106,22 @@ export function TransactionForm({ onSubmit, initialData, onCancel }: Transaction
       {type === 'expense' && (
         <div className="flex flex-col gap-1.5">
           <label className="text-xs sm:text-sm font-medium text-muted" htmlFor="category">Kategori</label>
-          <select id="category" required value={category} onChange={(e) => setCategory(e.target.value)} className="w-full bg-surface-elevated border border-hairline rounded-md p-2.5 text-content text-xs sm:text-sm focus:outline-none focus:border-primary">
+          <input
+            id="category"
+            type="text"
+            list="category-suggestions"
+            required
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Contoh: Konsumsi, ATK, Transportasi"
+            className="w-full bg-surface-elevated border border-hairline rounded-md p-2.5 text-content text-xs sm:text-sm focus:outline-none focus:border-primary"
+            autoComplete="off"
+          />
+          <datalist id="category-suggestions">
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat} />
             ))}
-          </select>
+          </datalist>
         </div>
       )}
 
